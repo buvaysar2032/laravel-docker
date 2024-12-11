@@ -1,0 +1,49 @@
+#version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./:/var/www/laravel
+    depends_on:
+      - mysql
+      - php
+  php:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/laravel
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - db_data:/var/lib/mysql
+  composer:
+    build:
+      context: docker/composer
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/laravel
+  artisan:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/laravel
+    entrypoint: ["php", "/var/www/laravel/artisan"]
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+volumes:
+  db_data:
