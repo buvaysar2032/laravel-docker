@@ -21,8 +21,8 @@
 1. Клонируйте репозиторий:
 
     ```bash
-    git clone https://github.com/your-username/your-project.git
-    cd your-project
+    git clone https://github.com/buvaysar2032/laravel-docker.git
+    cd laravel-docker
     ```
 
 2. Создайте файл `.env` для настройки конфигурации Laravel. Например, скопируйте файл `.env.example` в `.env` и настройте параметры базы данных:
